@@ -9,20 +9,21 @@ DatarefHandler::DatarefHandler(QObject *parent)
     connection->registerClient(client);
 
     connection->connectTo("127.0.0.1", 51000); // 192.168.0.3
-    connection->setUpdateInterval(0.032);
 
-    //subscriptions = new Subscriptions(this);
+    //Set update frequency (seconds) on the X-Plane side
+    connection->setUpdateInterval(0.032);
 
     // Count the datarefs that are enlisted for subscription
     int nDataRefs = sizeof(subscriptionList)/sizeof(subscriptionList[0]);
     qDebug() << "Total subscriptions: " << nDataRefs;
 
+    // Subscribe all enlisted datarefs and create a Hash lookup for quick data access
     for (int i=0; i < nDataRefs ;i++){
         client->subscribeDataRef(subscriptionList[i].dataref, subscriptionList[i].tolerance);
         dataRefLookup.insert(subscriptionList[i].dataref, subscriptionList[i]);
     }
 
-    // Connect datarefs to the client
+    // Connect client datarefs to handler slots below
     connect(client, SIGNAL(refChanged(QString, double)),
             this, SLOT(refChanged(QString, double)));
     connect(client, SIGNAL(refChanged(QString, QString)),
