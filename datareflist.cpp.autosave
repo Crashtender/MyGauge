@@ -1,0 +1,51 @@
+#include "datareflist.h"
+#include <QElapsedTimer>
+
+DatarefHandler::DatarefHandler(QObject *parent)
+{
+
+    // Create connection to ExtPlane and register new client
+    connection = new ExtPlaneConnection();
+    client = new ExtPlaneClient(this, "myGauge", connection);
+    connection->registerClient(client);
+
+    connection->connectTo("127.0.0.1", 51000); // 192.168.0.3
+    connection->setUpdateInterval(0.16);
+
+
+
+
+    // Count the datarefs that are enlisted for subscription
+    int nDataRefs = (sizeof(dataRefs)/sizeof(dataRefs[0]));
+
+    for (int i=0; i < nDataRefs ;i++){
+        //dataRefLookup.insert(dataRefs[i].dataref, dataRefs[i]);
+        // DataRefStruct ref = drList->getRef(i);
+        client->subscribeDataRef(dataRefs[i].dataref, dataRefs[i].tolerance);
+    }
+
+
+    // Connect datarefs to the client
+    connect(client, SIGNAL(refChanged(QString, double)),
+            this, SLOT(refChanged(QString, double)));
+    connect(client, SIGNAL(refChanged(QString, QString)),
+            this, SLOT(refChanged(QString, QString)));
+
+}
+
+
+void DatarefHandler::refChanged(QString name, double value) {
+    DataRefStruct   ref = dataRefLookup[name];
+    if (ref.value == value) return;
+    ref.value = value;
+    //emit newPitch(value);
+    emit newDouble(ref.id, ref.value.toDouble());
+}
+
+void DatarefHandler::refChanged(QString name, QString value){
+    DataRefStruct   ref = dataRefLookup[name];
+    if (ref.value == value) return;
+    ref.value = value;
+    //emit stringChanged(name, value);
+}
+
