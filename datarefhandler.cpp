@@ -36,7 +36,6 @@ void DatarefHandler::refChanged(QString name, double value) {
     DataRefStruct   ref = dataRefLookup[name];
     if (ref.value == value) return;
     ref.value = value;
-    //emit newPitch(value);
     emit newDouble(ref.id, ref.value);
 }
 

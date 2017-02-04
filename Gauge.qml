@@ -16,10 +16,6 @@ Item {
     Connections{
         target: datarefHandler
 
-        onNewPitch:{
-            pitch = value
-        }
-
         onNewDouble:{
             main[name] = value
         }
