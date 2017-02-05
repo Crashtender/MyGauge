@@ -15,7 +15,6 @@ DatarefHandler::DatarefHandler(QObject *parent)
 
     // Count the datarefs that are enlisted for subscription
     int nDataRefs = sizeof(subscriptionList)/sizeof(subscriptionList[0]);
-    qDebug() << "Total subscriptions: " << nDataRefs;
 
     // Subscribe all enlisted datarefs and create a Hash lookup for quick data access
     for (int i=0; i < nDataRefs ;i++){
@@ -34,14 +33,12 @@ DatarefHandler::DatarefHandler(QObject *parent)
 
 void DatarefHandler::refChanged(QString name, double value) {
     DataRefStruct   ref = dataRefLookup[name];
-    if (ref.value == value) return;
     ref.value = value;
     emit newDouble(ref.id, ref.value);
 }
 
 void DatarefHandler::refChanged(QString name, QString string){
     DataRefStruct   ref = dataRefLookup[name];
-    if (ref.data == string) return;
     ref.data = string;
     emit newData(name, string);
 }
