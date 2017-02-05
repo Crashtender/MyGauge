@@ -9,8 +9,8 @@ enum DataRefType {
 };
 
 struct DataRefStruct {
-    QString         dataref;        // As can be found on http://xplane.anzui.de/dataref-search/
-    float           tolerance;      // Update tolerance (0: every frame)
+    QString         dataref;        // Datarefs from X-Plane
+    float           tolerance;      // Update tolerance (deviation from previous value; 0 = every frame)
     DataRefType     dataType;       // As defined above (drFloat, drInt, drChar)
     QString         id;             // ID for gauge qml
     double          value;          // Last value

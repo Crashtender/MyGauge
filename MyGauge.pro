@@ -12,7 +12,8 @@ SOURCES += main.cpp \
     ../ExtPlane/client/extplane-client-qt/extplaneconnection.cpp \
     ../ExtPlane/client/extplane-client-qt/simulatedextplaneconnection.cpp \
     subscriptions.cpp \
-    datarefhandler.cpp
+    datarefhandler.cpp \
+    settings.cpp
 
 RESOURCES += qml.qrc
 

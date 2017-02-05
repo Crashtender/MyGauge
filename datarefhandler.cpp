@@ -1,17 +1,18 @@
 #include "datarefhandler.h"
+#include "settings.cpp"
 #include "subscriptions.cpp"
 
 DatarefHandler::DatarefHandler(QObject *parent)
 {
     // Create connection to ExtPlane and register new client
     connection = new ExtPlaneConnection();
-    client = new ExtPlaneClient(this, "myGauge", connection);
+    client = new ExtPlaneClient(this, instrumentCompany + "_" + instrumentType, connection);
     connection->registerClient(client);
 
-    connection->connectTo("127.0.0.1", 51000); // 192.168.0.3
+    connection->connectTo(ipHost, 51000);
 
     //Set update frequency (seconds) on the X-Plane side
-    connection->setUpdateInterval(0.032);
+    connection->setUpdateInterval(updateFreqHost);
 
     // Count the datarefs that are enlisted for subscription
     int nDataRefs = sizeof(subscriptionList)/sizeof(subscriptionList[0]);
